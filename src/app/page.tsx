@@ -1,14 +1,5 @@
 import React from 'react';
-
-export default function Home() {
-  return (
-    <div className="flex justify-center items-center h-screen">
-      <h1 className="text-4xl font-bold">Welcome to the Song Generator App</h1>
-    </div>
-  );
-}
-
-/* import Image from "next/image";
+import Image from "next/image";
 
 export default function Home() {
   return (
@@ -109,4 +100,3 @@ export default function Home() {
     </div>
   );
 }
-*/
