@@ -1,6 +1,0 @@
-streamlit
-openai
-magenta
-tensorflow
-soundfile
-numpy
