@@ -40,7 +40,7 @@ const SongsPage = () => {
         <p className="text-lg">{lyrics}</p>
         <div className="mt-4">
           <button onClick={() => handleDownload(1)} className="px-6 py-3 bg-blue-500 text-white text-lg rounded-lg shadow-md mr-4">
-            Download Song 1
+            {song1Downloaded ? 'Song 1 Downloaded' : 'Download Song 1'}
           </button>
           <button onClick={() => handleRefresh(1)} className="px-6 py-3 bg-yellow-500 text-white text-lg rounded-lg shadow-md">
             Refresh Song 1
@@ -54,7 +54,7 @@ const SongsPage = () => {
         <p className="text-lg">{lyrics}</p>
         <div className="mt-4">
           <button onClick={() => handleDownload(2)} className="px-6 py-3 bg-blue-500 text-white text-lg rounded-lg shadow-md mr-4">
-            Download Song 2
+            {song2Downloaded ? 'Song 2 Downloaded' : 'Download Song 2'}
           </button>
           <button onClick={() => handleRefresh(2)} className="px-6 py-3 bg-yellow-500 text-white text-lg rounded-lg shadow-md">
             Refresh Song 2
