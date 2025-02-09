@@ -80,7 +80,7 @@ const Page = () => {
 
       <form onSubmit={handleSubmit} className="w-full max-w-3xl bg-white p-6 rounded-lg shadow-lg mb-6">
         <div className="mb-4">
-          <label className="block text-lg font-semibold mb-2">Enter Lyrics</label>
+          <label className="block text-lg font-semibold mb-2">Enter Lyrics Here</label>
           <textarea
             value={lyrics}
             onChange={(e) => setLyrics(e.target.value)}
