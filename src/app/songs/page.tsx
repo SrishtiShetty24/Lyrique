@@ -31,21 +31,24 @@ const SongsPage = () => {
   const [song2Downloaded, setSong2Downloaded] = useState(false);
 
   const handleDownloadSong = (songNumber: number) => {
+    let songFileURL: string;
     let songFileName: string;
 
     // Define the hardcoded song URL based on the song number
     if (songNumber === 1) {
       // Hardcoded audio file URL for song 1 (you can use any valid URL or base64-encoded audio data)
+      songFileURL = 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3'; // Example audio file
       songFileName = 'song1_sample.mp3'; // Set the file name for download
     } else if (songNumber === 2) {
       // Hardcoded audio file URL for song 2
+      songFileURL = 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3'; // Example audio file
       songFileName = 'song2_sample.mp3'; // Set the file name for download
     } else {
       return;
     }
 
     // Create a Blob from the data
-    fetch(songData)
+    fetch(songFileURL)
       .then((response) => response.blob())
       .then((blob) => {
         // Create a URL for the Blob object
