@@ -6,7 +6,7 @@ import { Suspense } from 'react';
 
 const SongsPage = () => {
   const searchParams = useSearchParams();
-  const lyrics = searchParams.get('lyrics'); // Retrieve the lyrics query param
+  const data = searchParams.get('data'); // Retrieve the lyrics query param
 
   // State to track song download status
   const [song1Downloaded, setSong1Downloaded] = useState(false);
@@ -35,12 +35,12 @@ const SongsPage = () => {
       <div className="mb-8 w-3/4">
         <div className="mb-6">
           <h2 className="text-2xl font-bold">Lyrics 1</h2>
-          <p className="text-lg">{lyrics}</p>
+          <p className="text-lg">{data.lyrics}</p>
         </div>
 
         <div className="mb-6">
           <h2 className="text-2xl font-bold">Lyrics 2</h2>
-          <p className="text-lg">{lyrics}</p>
+          <p className="text-lg">{data.lyrics}</p>
         </div>
       </div>
 
