@@ -2,6 +2,7 @@
 
 import React, { useState, useRef } from 'react';
 import { useRouter } from 'next/navigation';
+import axios from 'axios';
 
 export default function Home() {
   const [recording, setRecording] = useState(false);
@@ -37,8 +38,9 @@ export default function Home() {
   };
 
   const router = useRouter();
+  
   const handleGenerateLyrics = async () => {
-    setGeneratedLyrics(`Generated lyrics based on mood: ${mood}, genre: ${genre}, and prompt: ${lyrics}`);
+    setGeneratedLyrics(`Generating lyrics based on mood: ${mood}, genre: ${genre}, and prompt: ${lyrics}...`);
 
     const requestData = {
       mood,
@@ -47,29 +49,18 @@ export default function Home() {
       audioURL,
     };
 
-    // Making the API request to generate lyrics
     try {
-      /*
-      const response = await fetch('/api/generate-lyrics', {
-        method: 'POST',
+      const response = await axios.post('http://127.0.0.1:5000/generate-lyrics', requestData, {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(requestData),
       });
 
-      const data = await response.json();
-*/
-      const data = requestData;
-      // Simulate response status
-      const response = { ok: true };
-      
-      if (response.ok) {
-        setGeneratedLyrics(data.lyrics); // Handle response accordingly
-        // Navigate to songs page with lyrics as query param
-        router.push(`/songs?data=${encodeURIComponent(JSON.stringify(data))}`);
+      if (response.status === 200) {
+        setGeneratedLyrics(response.data.lyrics);
+        router.push(`/songs?data=${encodeURIComponent(JSON.stringify(response.data))}`);
       } else {
-        console.error('Error:', data);
+        console.error('Error:', response.data);
       }
     } catch (error) {
       console.error('Error during API call:', error);
@@ -111,9 +102,13 @@ export default function Home() {
           rows={3}
         />
       </div>
-        <button onClick={handleGenerateLyrics} className="px-6 py-3 bg-green-500 text-white text-lg rounded-lg shadow-md mb-4">
-          Generate Lyrics
-        </button>
+
+      <button 
+        onClick={handleGenerateLyrics} 
+        className="px-6 py-3 bg-green-500 text-white text-lg rounded-lg shadow-md mb-4"
+      >
+        Generate Lyrics
+      </button>
       
       {generatedLyrics && (
         <div className="p-4 bg-white rounded shadow-md mb-4 w-3/4">
@@ -138,4 +133,3 @@ export default function Home() {
     </div>
   );
 }
-
