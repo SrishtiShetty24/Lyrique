@@ -2,23 +2,11 @@
 
 import React from 'react';
 import { useSearchParams } from 'next/navigation';
+import { Suspense } from 'react';
 
-export default function Page2() {
-  //const [song1, setSong1] = useState<string | null>(null);
-  //const [song2, setSong2] = useState<string | null>(null);
+const SongsPage = () => {
   const searchParams = useSearchParams();
-  const lyrics = searchParams.get('lyrics'); // Retrieve lyrics from the query parameter
-
-
-  const handleDownload = (songId: number) => {
-    console.log(`Downloading song ${songId}`);
-    // Add logic to download the song
-  };
-
-  const handleRefresh = (songId: number) => {
-    console.log(`Refreshing song ${songId}`);
-    // Add logic to refresh the song
-  };
+  const lyrics = searchParams.get('lyrics'); // Retrieve the lyrics query param
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen p-4 bg-gray-100">
@@ -52,5 +40,15 @@ export default function Page2() {
         </div>
       </div>
     </div>
+  );
+}
+
+
+// Wrap the page in Suspense
+export default function SongsPageWrapper() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <SongsPage />
+    </Suspense>
   );
 }
