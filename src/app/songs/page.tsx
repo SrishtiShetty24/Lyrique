@@ -52,9 +52,13 @@ const SongsPage = () => {
     link.href = songFileURL;
     link.download = songFileName;
 
+    document.body.appendChild(link);
+    
     // Programmatically click the anchor tag to start the download
     link.click();
 
+    document.body.removeChild(link);
+    
     // Set the download state to indicate the song has been downloaded
     if (songNumber === 1) {
       setSong1Downloaded(true);
