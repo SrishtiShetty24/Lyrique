@@ -49,7 +49,7 @@ export default function Home() {
 
     // Making the API request to generate lyrics
     try {
-      /* uncomment this block - don't remove code
+      
       const response = await fetch('/api/generate-lyrics', {
         method: 'POST',
         headers: {
@@ -59,7 +59,7 @@ export default function Home() {
       });
 
       const data = await response.json();
-*/
+
       const data = requestData; // comment this
       // Simulate response status
       const response = { ok: true };
