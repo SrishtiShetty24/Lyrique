@@ -12,7 +12,7 @@ const SongsPage = () => {
   const [song1Downloaded, setSong1Downloaded] = useState(false);
   const [song2Downloaded, setSong2Downloaded] = useState(false);
 
-  const handleDownload = (songNumber: number) => {
+  const handleDownloadSong = (songNumber: number) => {
     if (songNumber === 1) {
       setSong1Downloaded(true);
     } else if (songNumber === 2) {
@@ -68,9 +68,6 @@ const SongsPage = () => {
       >
         Refresh
       </button>
-
-      {/* Link back to Home */}
-      <Link href="/" className="mt-4 text-blue-600">Go back to Home</Link>
     </div>
   );
 }
