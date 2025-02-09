@@ -17,16 +17,8 @@ const Page = () => {
   const [audioURL, setAudioURL] = useState<string | null>(null);
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
 
-  
-  const handleSubmit = async (event: React.FormEvent) => {
-    event.preventDefault();
-    setLoading(true);
-    setError(null);
 
-    console.log('Submitting:', { prompt: lyrics, mood, genre }); // Debug log
-
-
-    const handleStartRecording = async () => {
+  const handleStartRecording = async () => {
     const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
     mediaRecorderRef.current = new MediaRecorder(stream);
     mediaRecorderRef.current.ondataavailable = (event) => {
@@ -48,6 +40,16 @@ const Page = () => {
       setRecording(false);
     }
   };
+  
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
+    setLoading(true);
+    setError(null);
+
+    console.log('Submitting:', { prompt: lyrics, mood, genre }); // Debug log
+
+
+    
     
     try {
       const response = await fetch('/api/generate', {
