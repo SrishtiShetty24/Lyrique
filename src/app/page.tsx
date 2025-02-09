@@ -10,7 +10,7 @@ export default function Home() {
   const audioChunksRef = useRef<Blob[]>([]);
   const [mood, setMood] = useState('');
   const [genre, setGenre] = useState('');
-  const [lyricsPrompt, setLyricsPrompt] = useState('');
+  const [lyrics, setLyrics] = useState('');
   const [generatedLyrics, setGeneratedLyrics] = useState('');
 
   const handleStartRecording = async () => {
@@ -38,7 +38,7 @@ export default function Home() {
 
   const router = useRouter();
   const handleGenerateLyrics = async () => {
-    setGeneratedLyrics(`Generated lyrics based on mood: ${mood}, genre: ${genre}, and prompt: ${lyricsPrompt}`);
+    setGeneratedLyrics(`Generated lyrics based on mood: ${mood}, genre: ${genre}, and prompt: ${lyrics}`);
 
     const requestData = {
       mood,
@@ -106,8 +106,8 @@ export default function Home() {
         <label className="block mb-1 text-lg">Enter a prompt for the lyrics:</label>
         <textarea
           className="p-3 border rounded w-full bg-gray-200"
-          value={lyricsPrompt}
-          onChange={(e) => setLyricsPrompt(e.target.value)}
+          value={lyrics}
+          onChange={(e) => setLyrics(e.target.value)}
           rows={3}
         />
       </div>
