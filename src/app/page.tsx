@@ -6,7 +6,6 @@ import { useRouter } from 'next/navigation';
 const Page = () => {
   const router = useRouter();
   const [lyrics, setLyrics] = useState<string>('');
-  const [songFileUrl, setSongFileUrl] = useState<string>('');
 
   const handleLyricsChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setLyrics(event.target.value);
@@ -25,16 +24,11 @@ const Page = () => {
 
     const data = await response.json();
 
-    // Assuming the response contains generated lyrics and song file URL
     if (data.lyrics) {
-      setLyrics(data.lyrics);  // Update with the generated lyrics
-    }
-    if (data.songFileUrl) {
-      setSongFileUrl(data.songFileUrl);  // Update with the generated song file URL
+      setLyrics(data.lyrics);
     }
 
-    // Redirect to result page
-    router.push(`/result?data=${encodeURIComponent(JSON.stringify(data))}`);
+    router.push(`/songs/result?data=${encodeURIComponent(JSON.stringify(data))}`);
   };
 
   return (

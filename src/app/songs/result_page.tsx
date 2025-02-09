@@ -1,18 +1,23 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { useSearchParams } from 'next/navigation';  // Updated import
+
+type SongData = {
+  lyrics: string;
+  songFileUrl: string;
+};
 
 const ResultPage = () => {
-  const searchParams = useSearchParams();  // Accessing search params
-  const [songData, setSongData] = useState<any>(null);
+  const [songData, setSongData] = useState<SongData | null>(null);
 
   useEffect(() => {
-    const data = searchParams.get('data');  // Using get to retrieve the query param
+    const params = new URLSearchParams(window.location.search);
+    const data = params.get('data');
+
     if (data) {
-      setSongData(JSON.parse(data));
+      setSongData(JSON.parse(decodeURIComponent(data)));
     }
-  }, [searchParams]);
+  }, []);
 
   if (!songData) return <div>Loading...</div>;
 
