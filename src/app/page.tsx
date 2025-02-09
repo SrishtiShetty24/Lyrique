@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useRef } from 'react';
+import Link from 'next/link';
 
 export default function Home() {
   const [recording, setRecording] = useState(false);
@@ -74,11 +75,12 @@ export default function Home() {
           rows={3}
         />
       </div>
-
-      <button onClick={handleGenerateLyrics} className="px-6 py-3 bg-green-500 text-white text-lg rounded-lg shadow-md mb-4">
-        Generate Lyrics
-      </button>
-
+      <Link href="/song">
+        <button onClick={handleGenerateLyrics} className="px-6 py-3 bg-green-500 text-white text-lg rounded-lg shadow-md mb-4">
+          Generate Lyrics
+        </button>
+      </Link>
+      
       {generatedLyrics && (
         <div className="p-4 bg-white rounded shadow-md mb-4 w-3/4">
           <h2 className="text-2xl font-bold">Generated Lyrics:</h2>
