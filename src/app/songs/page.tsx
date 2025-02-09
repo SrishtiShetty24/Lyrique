@@ -1,6 +1,6 @@
 'use client'; // Ensure this file is client-side rendered
 
-import { useState } from 'react'; // Import useState from React
+import { useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { Suspense } from 'react';
 
