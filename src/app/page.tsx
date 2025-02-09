@@ -37,7 +37,7 @@ export default function Home() {
   };
 
   const router = useRouter();
-  const handleGenerateLyrics = () => {
+  const handleGenerateLyrics = async () => {
     setGeneratedLyrics(`Generated lyrics based on mood: ${mood}, genre: ${genre}, and prompt: ${lyricsPrompt}`);
 
     const requestData = {
