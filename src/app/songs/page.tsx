@@ -47,12 +47,12 @@ const SongsPage = () => {
       <div className="mb-8 w-3/4">
         <div className="mb-6">
           <h2 className="text-2xl font-bold">Lyrics 1</h2>
-          <p className="text-lg">{data.lyrics}</p>
+          <p className="text-lg">{data ? data.lyrics : "Loading lyrics..."}</p>
         </div>
 
         <div className="mb-6">
           <h2 className="text-2xl font-bold">Lyrics 2</h2>
-          <p className="text-lg">{data.lyrics}</p>
+          <p className="text-lg">{data ? data.lyrics : "Loading lyrics..."}</p>
         </div>
       </div>
 
