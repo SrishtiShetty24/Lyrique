@@ -1,10 +1,14 @@
 'use client';  // Ensure this file is client-side rendered
 
 import React from 'react';
+import { useSearchParams } from 'next/navigation';
 
 export default function Page2() {
   //const [song1, setSong1] = useState<string | null>(null);
   //const [song2, setSong2] = useState<string | null>(null);
+  const searchParams = useSearchParams();
+  const lyrics = searchParams.get('lyrics'); // Retrieve lyrics from the query parameter
+
 
   const handleDownload = (songId: number) => {
     console.log(`Downloading song ${songId}`);
@@ -23,7 +27,7 @@ export default function Page2() {
       {/* Song 1 with Lyrics */}
       <div className="mb-6 w-3/4">
         <h2 className="text-2xl font-bold">Lyrics 1</h2>
-        <p className="text-lg">Here are the lyrics for song 1.</p>
+        <p className="text-lg">{lyrics}</p>
         <div className="mt-4">
           <button onClick={() => handleDownload(1)} className="px-6 py-3 bg-blue-500 text-white text-lg rounded-lg shadow-md mr-4">
             Download Song 1
@@ -37,7 +41,7 @@ export default function Page2() {
       {/* Song 2 with Lyrics */}
       <div className="mb-6 w-3/4">
         <h2 className="text-2xl font-bold">Lyrics 2</h2>
-        <p className="text-lg">Here are the lyrics for song 2.</p>
+        <p className="text-lg">{lyrics}</p>
         <div className="mt-4">
           <button onClick={() => handleDownload(2)} className="px-6 py-3 bg-blue-500 text-white text-lg rounded-lg shadow-md mr-4">
             Download Song 2
