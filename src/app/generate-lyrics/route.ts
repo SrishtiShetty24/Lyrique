@@ -6,6 +6,7 @@ export async function POST(request: Request) {
 
     // Extract parameters from the body (assuming 'mood', 'genre', and 'lyricsPrompt')
     const { mood, genre, lyricsPrompt } = request;
+    const mood = request.mood;
 
     // Validate the parameters
     if (!mood || !genre || !lyricsPrompt) {
