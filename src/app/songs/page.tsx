@@ -8,6 +8,25 @@ const SongsPage = () => {
   const searchParams = useSearchParams();
   const lyrics = searchParams.get('lyrics'); // Retrieve the lyrics query param
 
+  const handleDownloadSong = (songNumber: number) => {
+    if (songNumber === 1) {
+      setSong1Downloaded(true);
+      // You can add the logic to download Song 1 here
+      console.log('Downloading Song 1...');
+    } else {
+      setSong2Downloaded(true);
+      // You can add the logic to download Song 2 here
+      console.log('Downloading Song 2...');
+    }
+  };
+
+  const handleRefresh = () => {
+    // Reset download states
+    setSong1Downloaded(false);
+    setSong2Downloaded(false);
+    console.log('Page refreshed');
+  };
+  
   return (
     <div className="flex flex-col items-center justify-center min-h-screen p-4 bg-gray-100">
       <h1 className="text-4xl font-bold mb-6">Page 2 - Song Details</h1>
