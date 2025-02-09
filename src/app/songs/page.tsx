@@ -4,10 +4,14 @@ import { useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { Suspense } from 'react';
 
+type LyricsData = {
+  lyrics: string;
+};
+
 const SongsPage = () => {
   const searchParams = useSearchParams();
   const dataString = searchParams.get('data'); // Retrieve the lyrics query param
-  const [data, setData] = useState(null);
+  const [data, setData] = useState<LyricsData | null>(null);
   
   useEffect(() => {
     if (dataString) {
@@ -39,7 +43,7 @@ const SongsPage = () => {
     console.log('Page refreshed');
   };
   
-    return (
+  return (
     <div className="flex flex-col items-center justify-center min-h-screen p-4 bg-gray-100">
       <h1 className="text-4xl font-bold mb-6">Page 2: Lyrics & Songs</h1>
 
@@ -88,7 +92,7 @@ const SongsPage = () => {
       </button>
     </div>
   );
-}
+};
 
 // Wrap the page in Suspense
 export default function SongsPageWrapper() {
