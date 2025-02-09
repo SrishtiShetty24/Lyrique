@@ -140,7 +140,7 @@ const Page = () => {
         onClick={recording ? handleStopRecording : handleStartRecording}
         className="px-6 py-3 bg-blue-500 text-white text-lg rounded-lg shadow-md mt-12"
       >
-        {recording ? 'Stop Recording' : 'Voice Recording'}
+        {recording}
       </button>
       </form>
     </div>
