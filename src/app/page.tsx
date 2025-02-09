@@ -40,12 +40,12 @@ export default function Home() {
   const handleGenerateLyrics = () => {
     setGeneratedLyrics(`Generated lyrics based on mood: ${mood}, genre: ${genre}, and prompt: ${lyricsPrompt}`);
 
-    const requestData = {
+    /*const requestData = {
       mood,
       genre,
       lyricsPrompt,
       audioURL,
-    };
+    };*/
 
     // Making the API request to generate lyrics
     try {
