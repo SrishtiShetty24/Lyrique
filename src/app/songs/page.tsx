@@ -19,8 +19,14 @@ const SongsPage = () => {
       setSong2Downloaded(true);
     }
   };
-
-
+  
+  const handleRefresh = () => {
+    // Reset download states
+    setSong1Downloaded(false);
+    setSong2Downloaded(false);
+    console.log('Page refreshed');
+  };
+  
     return (
     <div className="flex flex-col items-center justify-center min-h-screen p-4 bg-gray-100">
       <h1 className="text-4xl font-bold mb-6">Page 2: Lyrics & Songs</h1>
