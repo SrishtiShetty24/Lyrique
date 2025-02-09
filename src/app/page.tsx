@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useRef } from 'react';
+import { useRouter } from 'next/navigation';
 
 export default function Home() {
   const [recording, setRecording] = useState(false);
@@ -10,6 +11,7 @@ export default function Home() {
   const [mood, setMood] = useState('');
   const [genre, setGenre] = useState('');
   const [lyricsPrompt, setLyricsPrompt] = useState('');
+  const [lyrics, setLyrics] = useState('');
   const [generatedLyrics, setGeneratedLyrics] = useState('');
 
   const handleStartRecording = async () => {
@@ -35,14 +37,50 @@ export default function Home() {
     }
   };
 
-  const handleGenerateLyrics = () => {
-    setGeneratedLyrics(Generated lyrics based on mood: ${mood}, genre: ${genre}, and prompt: ${lyricsPrompt});
+  const router = useRouter();
+  const handleGenerateLyrics = async () => {
+    setGeneratedLyrics(`Generated lyrics based on mood: ${mood}, genre: ${genre}, and prompt: ${lyricsPrompt}`);
+    setGeneratedLyrics(`Generated lyrics based on mood: ${mood}, genre: ${genre}, and prompt: ${lyrics}`);
+
+    const requestData = {
+      mood,
+      genre,
+      lyrics,
+      audioURL,
+    };
+
+    // Making the API request to generate lyrics
+    try {
+      /*
+      const response = await fetch('/api/generate-lyrics', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestData),
+      });
+      const data = await response.json();
+*/
+      const data = requestData;
+      // Simulate response status
+      const response = { ok: true };
+
+      if (response.ok) {
+        setGeneratedLyrics(data.lyrics); // Handle response accordingly
+        // Navigate to songs page with lyrics as query param
+        router.push(`/songs?data=${encodeURIComponent(JSON.stringify(data))}`);
+      } else {
+        console.error('Error:', data);
+      }
+    } catch (error) {
+      console.error('Error during API call:', error);
+    }
   };
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen p-4 bg-gray-100">
       <h1 className="text-4xl font-bold mb-6">AI Song Generator</h1>
-      
+
       <div className="mb-4 w-3/4">
         <label className="block mb-1 text-lg">Mood:</label>
         <select className="p-3 border rounded w-full" value={mood} onChange={(e) => setMood(e.target.value)}>
@@ -71,13 +109,14 @@ export default function Home() {
           className="p-3 border rounded w-full bg-gray-200"
           value={lyricsPrompt}
           onChange={(e) => setLyricsPrompt(e.target.value)}
+          value={lyrics}
+          onChange={(e) => setLyrics(e.target.value)}
           rows={3}
         />
       </div>
-
-      <button onClick={handleGenerateLyrics} className="px-6 py-3 bg-green-500 text-white text-lg rounded-lg shadow-md mb-4">
-        Generate Lyrics
-      </button>
+        <button onClick={handleGenerateLyrics} className="px-6 py-3 bg-green-500 text-white text-lg rounded-lg shadow-md mb-4">
+          Generate Lyrics
+        </button>
 
       {generatedLyrics && (
         <div className="p-4 bg-white rounded shadow-md mb-4 w-3/4">
@@ -99,6 +138,6 @@ export default function Home() {
       >
         {recording ? 'Stop Recording' : 'Voice Recording'}
       </button>
-    </div>
-  );
+    </div>
+  );
 }
