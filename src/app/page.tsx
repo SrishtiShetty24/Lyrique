@@ -39,13 +39,13 @@ export default function Home() {
   const router = useRouter();
   const handleGenerateLyrics = async () => {
     setGeneratedLyrics(`Generated lyrics based on mood: ${mood}, genre: ${genre}, and prompt: ${lyricsPrompt}`);
-/*
+
     const requestData = {
       mood,
       genre,
-      lyricsPrompt,
+      lyrics,
       audioURL,
-    };*/
+    };
 
     // Making the API request to generate lyrics
     try {
@@ -60,10 +60,7 @@ export default function Home() {
 
       const data = await response.json();
 */
-      const data = {
-      lyrics: 'Temp lyrics for testing', // Hardcoded message
-      };
-
+      const data = requestData;
       // Simulate response status
       const response = { ok: true };
       
