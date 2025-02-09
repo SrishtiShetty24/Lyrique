@@ -27,6 +27,7 @@ export async function POST(request: Request) {
     });
   } catch (error) {
     // Catch any errors that may occur during request handling
+    console.error('Error in generate-lyrics API:', error);
     return new Response(
       JSON.stringify({ error: 'Internal Server Error' }),
       { status: 500, headers: { 'Content-Type': 'application/json' } }
