@@ -1,116 +1,103 @@
-'use client'; 
+'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 
 export default function Home() {
-  const [prompt, setPrompt] = useState('');
-  const [lyrics, setLyrics] = useState('');
-  const [songURL, setSongURL] = useState('');
+  const [recording, setRecording] = useState(false);
+  const [audioURL, setAudioURL] = useState<string | null>(null);
+  const mediaRecorderRef = useRef<MediaRecorder | null>(null);
+  const audioChunksRef = useRef<Blob[]>([]);
   const [mood, setMood] = useState('');
   const [genre, setGenre] = useState('');
+  const [lyricsPrompt, setLyricsPrompt] = useState('');
+  const [generatedLyrics, setGeneratedLyrics] = useState('');
 
-  const handleGenerateLyrics = async () => {
-    const response = await fetch('/api/generate-lyrics', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ prompt, mood, genre }),
-    });
-    const data = await response.json();
-    setLyrics(data.lyrics);
+  const handleStartRecording = async () => {
+    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    mediaRecorderRef.current = new MediaRecorder(stream);
+    mediaRecorderRef.current.ondataavailable = (event) => {
+      audioChunksRef.current.push(event.data);
+    };
+    mediaRecorderRef.current.onstop = () => {
+      const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/wav' });
+      const url = URL.createObjectURL(audioBlob);
+      setAudioURL(url);
+      audioChunksRef.current = [];
+    };
+    mediaRecorderRef.current.start();
+    setRecording(true);
   };
 
-  const handleGenerateSong = async () => {
-    const response = await fetch('/api/generate-song', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ lyrics }),
-    });
-    const data = await response.json();
-    setSongURL(data.songURL);
+  const handleStopRecording = () => {
+    if (mediaRecorderRef.current) {
+      mediaRecorderRef.current.stop();
+      setRecording(false);
+    }
+  };
+
+  const handleGenerateLyrics = () => {
+    setGeneratedLyrics(`Generated lyrics based on mood: ${mood}, genre: ${genre}, and prompt: ${lyricsPrompt}`);
   };
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen p-4 bg-gray-100">
-      <h1 className="text-4xl font-bold mb-8">AI Song Generator</h1>
-
-      {/* Melody Selection */}
-      <div className="w-full max-w-md bg-white p-4 border border-gray-300 rounded shadow-md mb-6">
-        <h2 className="text-xl font-bold mb-2">Melody Selection</h2>
-        
-        {/* Mood Selection */}
-        <div className="mb-4">
-          <label className="block font-medium mb-1">Mood:</label>
-          <select 
-            value={mood} 
-            onChange={(e) => setMood(e.target.value)}
-            className="w-full p-2 border border-gray-300 rounded"
-          >
-            <option value="">Select a mood</option>
-            <option value="Happy">Happy</option>
-            <option value="Sad">Sad</option>
-            <option value="Energetic">Energetic</option>
-            <option value="Calm">Calm</option>
-          </select>
-        </div>
-
-        {/* Genre Selection */}
-        <div className="mb-4">
-          <label className="block font-medium mb-1">Genre:</label>
-          <select 
-            value={genre} 
-            onChange={(e) => setGenre(e.target.value)}
-            className="w-full p-2 border border-gray-300 rounded"
-          >
-            <option value="">Select a genre</option>
-            <option value="Pop">Pop</option>
-            <option value="Rock">Rock</option>
-            <option value="Jazz">Jazz</option>
-            <option value="Classical">Classical</option>
-          </select>
-        </div>
+      <h1 className="text-2xl font-bold mb-4">AI Song Generator</h1>
+      
+      <div className="mb-4">
+        <label className="block mb-1">Mood:</label>
+        <select className="p-2 border rounded" value={mood} onChange={(e) => setMood(e.target.value)}>
+          <option value="">Select a mood</option>
+          <option value="happy">Happy</option>
+          <option value="sad">Sad</option>
+          <option value="excited">Excited</option>
+        </select>
       </div>
 
-      {/* Prompt Input */}
-      <textarea
-        value={prompt}
-        onChange={(e) => setPrompt(e.target.value)}
-        placeholder="Enter a prompt for the lyrics"
-        className="w-full max-w-md p-2 border border-gray-300 rounded mb-4"
-      />
-      
-      {/* Generate Lyrics Button */}
-      <button
-        onClick={handleGenerateLyrics}
-        className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-      >
+      <div className="mb-4">
+        <label className="block mb-1">Genre:</label>
+        <select className="p-2 border rounded" value={genre} onChange={(e) => setGenre(e.target.value)}>
+          <option value="">Select a genre</option>
+          <option value="pop">Pop</option>
+          <option value="rock">Rock</option>
+          <option value="jazz">Jazz</option>
+        </select>
+      </div>
+
+      <div className="mb-4">
+        <label className="block mb-1">Enter a prompt for the lyrics:</label>
+        <input
+          type="text"
+          className="p-2 border rounded w-full"
+          value={lyricsPrompt}
+          onChange={(e) => setLyricsPrompt(e.target.value)}
+        />
+      </div>
+
+      <button onClick={handleGenerateLyrics} className="px-4 py-2 bg-green-500 text-white rounded-lg shadow-md mb-4">
         Generate Lyrics
       </button>
 
-      {/* Generated Lyrics Display */}
-      {lyrics && (
-        <div className="mt-8 w-full max-w-md">
-          <h2 className="text-2xl font-bold mb-4">Generated Lyrics</h2>
-          <pre className="bg-white p-4 border border-gray-300 rounded">{lyrics}</pre>
-          
-          {/* Generate Song Button */}
-          <button
-            onClick={handleGenerateSong}
-            className="mt-4 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
-          >
-            Generate Song
-          </button>
+      {generatedLyrics && (
+        <div className="p-4 bg-white rounded shadow-md mb-4">
+          <h2 className="text-xl font-bold">Generated Lyrics:</h2>
+          <p>{generatedLyrics}</p>
         </div>
       )}
 
-      {/* Audio Player for Generated Song */}
-      {songURL && (
-        <div className="mt-8">
-          <h2 className="text-2xl font-bold mb-4">Your Generated Song</h2>
-          <audio controls src={songURL} className="w-full max-w-md"></audio>
-        </div>
+      <button
+        onClick={recording ? handleStopRecording : handleStartRecording}
+        className="px-4 py-2 bg-blue-500 text-white rounded-lg shadow-md"
+      >
+        {recording ? 'Stop Recording' : 'Start Recording'}
+      </button>
+
+      {audioURL && (
+        <audio controls className="mt-4">
+          <source src={audioURL} type="audio/wav" />
+          Your browser does not support the audio element.
+        </audio>
       )}
     </div>
   );
 }
-
 
