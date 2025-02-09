@@ -3,8 +3,8 @@
 import React, { useState } from 'react';
 
 export default function Page2() {
-  const [song1, setSong1] = useState<string | null>(null);
-  const [song2, setSong2] = useState<string | null>(null);
+  //const [song1, setSong1] = useState<string | null>(null);
+  //const [song2, setSong2] = useState<string | null>(null);
 
   const handleDownload = (songId: number) => {
     console.log(`Downloading song ${songId}`);
