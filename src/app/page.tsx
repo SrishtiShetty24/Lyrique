@@ -58,7 +58,7 @@ export default function Home() {
         body: JSON.stringify(requestData),
       });*/
 
-      const data = "Lyrics Sample testing"; //await response.json();
+      const data.message = "Lyrics Sample testing"; //await response.json();
 
       //if (response.ok) {
       if (1) {
