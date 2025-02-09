@@ -68,7 +68,7 @@ export default function Home() {
       const response = { ok: true };
       
       if (response.ok) {
-        setGeneratedLyrics(data.message); // Handle response accordingly
+        setGeneratedLyrics(data.lyrics); // Handle response accordingly
         // Navigate to songs page with lyrics as query param
         router.push(`/songs?lyrics=${encodeURIComponent(data)}`);
       } else {
