@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useRef } from 'react';
-import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 export default function Home() {
   const [recording, setRecording] = useState(false);
@@ -36,8 +36,10 @@ export default function Home() {
     }
   };
 
+  const router = useRouter();
   const handleGenerateLyrics = () => {
     setGeneratedLyrics(`Generated lyrics based on mood: ${mood}, genre: ${genre}, and prompt: ${lyricsPrompt}`);
+    router.push('/songs');
   };
 
   return (
