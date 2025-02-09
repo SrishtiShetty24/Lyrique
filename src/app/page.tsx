@@ -75,7 +75,7 @@ export default function Home() {
           rows={3}
         />
       </div>
-      <Link href="/songs/page2">
+      <Link href="/songs">
         <button onClick={handleGenerateLyrics} className="px-6 py-3 bg-green-500 text-white text-lg rounded-lg shadow-md mb-4">
           Generate Lyrics
         </button>
