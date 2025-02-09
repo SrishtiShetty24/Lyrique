@@ -13,7 +13,11 @@ const Page = () => {
   const [genre, setGenre] = useState<string>(genres[0]); // Default to first genre
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
+  const [recording, setRecording] = useState(false);
+  const [audioURL, setAudioURL] = useState<string | null>(null);
+  const mediaRecorderRef = useRef<MediaRecorder | null>(null);
 
+  
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     setLoading(true);
@@ -21,6 +25,30 @@ const Page = () => {
 
     console.log('Submitting:', { prompt: lyrics, mood, genre }); // Debug log
 
+
+    const handleStartRecording = async () => {
+    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    mediaRecorderRef.current = new MediaRecorder(stream);
+    mediaRecorderRef.current.ondataavailable = (event) => {
+      audioChunksRef.current.push(event.data);
+    };
+    mediaRecorderRef.current.onstop = () => {
+      const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/wav' });
+      const url = URL.createObjectURL(audioBlob);
+      setAudioURL(url);
+      audioChunksRef.current = [];
+    };
+    mediaRecorderRef.current.start();
+    setRecording(true);
+  };
+
+  const handleStopRecording = () => {
+    if (mediaRecorderRef.current) {
+      mediaRecorderRef.current.stop();
+      setRecording(false);
+    }
+  };
+    
     try {
       const response = await fetch('/api/generate', {
         method: 'POST',
@@ -99,7 +127,13 @@ const Page = () => {
         >
           {loading ? 'Generating...' : 'Generate Song'}
         </button>
-
+        
+      {audioURL && (
+        <audio controls className="mt-4">
+          <source src={audioURL} type="audio/wav" />
+          Your browser does not support the audio element.
+        </audio>
+      )}
         <button
         onClick={recording ? handleStopRecording : handleStartRecording}
         className="px-6 py-3 bg-blue-500 text-white text-lg rounded-lg shadow-md mt-12"
