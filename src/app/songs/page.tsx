@@ -6,6 +6,8 @@ import { Suspense } from 'react';
 
 type LyricsData = {
   lyrics: string;
+  mood: string;
+  genre: string;
 };
 
 const SongsPage = () => {
