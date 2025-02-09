@@ -2,10 +2,10 @@
 export async function POST(request: Request) {
   try {
     // Parse the incoming request body as JSON
-    const body = await request.json();
+    //const body = await request.json();
 
     // Extract parameters from the body (assuming 'mood', 'genre', and 'lyricsPrompt')
-    const { mood, genre, lyricsPrompt } = body;
+    const { mood, genre, lyricsPrompt } = request;
 
     // Validate the parameters
     if (!mood || !genre || !lyricsPrompt) {
