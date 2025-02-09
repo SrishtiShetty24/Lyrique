@@ -31,43 +31,50 @@ const SongsPage = () => {
   const [song2Downloaded, setSong2Downloaded] = useState(false);
 
   const handleDownloadSong = (songNumber: number) => {
-    let songFileURL: string;
+    let songData: string;
     let songFileName: string;
 
-    // Define the hardcoded song URL based on the song number
+    // Define hardcoded song data for download based on song number
     if (songNumber === 1) {
-      // Hardcoded audio file URL for song 1 (you can use any valid URL or base64-encoded audio data)
-      songFileURL = 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3'; // Example audio file
-      songFileName = 'song1_sample.mp3'; // Set the file name for download
+      // Sample song data for song 1 (Replace with the actual song URL)
+      songData = 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3'; // Example URL
+      songFileName = 'song1_sample.mp3';
     } else if (songNumber === 2) {
-      // Hardcoded audio file URL for song 2
-      songFileURL = 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3'; // Example audio file
-      songFileName = 'song2_sample.mp3'; // Set the file name for download
+      songData = 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3'; // Example URL
+      songFileName = 'song2_sample.mp3';
     } else {
-      return;
+      console.error('Invalid song number');
+      return; // Exit if song number is not valid
     }
 
-    // Create a Blob from the data
-    fetch(songFileURL)
-      .then((response) => response.blob())
+    console.log('Fetching song data from:', songData);
+
+    // Fetch the song data and create a Blob for download
+    fetch(songData)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Failed to fetch the song data');
+        }
+        return response.blob(); // Fetch the song data as a blob
+      })
       .then((blob) => {
-        // Create a URL for the Blob object
+        console.log('Received blob:', blob);
         const downloadLink = document.createElement('a');
         const url = URL.createObjectURL(blob);
-
-        // Set attributes for downloading
+  
+        // Set the download link attributes
         downloadLink.href = url;
         downloadLink.download = songFileName;
-
-        // Append to DOM, trigger the click, and remove link
+  
+        // Append the download link to the document and trigger a click
         document.body.appendChild(downloadLink);
         downloadLink.click();
         document.body.removeChild(downloadLink);
-
-        // Cleanup: Revoke the Object URL after download
+  
+        // Cleanup the Blob URL
         URL.revokeObjectURL(url);
-
-        // Update state to reflect that the song was downloaded
+  
+        // Update state to reflect that the song has been downloaded
         if (songNumber === 1) {
           setSong1Downloaded(true);
         } else if (songNumber === 2) {
