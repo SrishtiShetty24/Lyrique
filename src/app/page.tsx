@@ -61,7 +61,7 @@ export default function Home() {
       const data = await response.json();
 */
       const data = {
-      message: 'Temp lyrics for testing', // Hardcoded message
+      lyrics: 'Temp lyrics for testing', // Hardcoded message
       };
 
       // Simulate response status
@@ -70,7 +70,7 @@ export default function Home() {
       if (response.ok) {
         setGeneratedLyrics(data.message); // Handle response accordingly
         // Navigate to songs page with lyrics as query param
-        router.push(`/songs?lyrics=${encodeURIComponent(data.message)}`);
+        router.push(`/songs?lyrics=${encodeURIComponent(data)}`);
       } else {
         console.error('Error:', data);
       }
