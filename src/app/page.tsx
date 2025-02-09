@@ -60,7 +60,8 @@ export default function Home() {
 
       const data = "Lyrics Sample testing"; //await response.json();
 
-      if (response.ok) {
+      //if (response.ok) {
+      if (1) {
         setGeneratedLyrics(data.message); // Handle response accordingly
         // Navigate to songs page with lyrics as query param
         router.push({
