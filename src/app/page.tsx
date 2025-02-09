@@ -70,7 +70,7 @@ export default function Home() {
       if (response.ok) {
         setGeneratedLyrics(data.lyrics); // Handle response accordingly
         // Navigate to songs page with lyrics as query param
-        router.push(`/songs?lyrics=${encodeURIComponent(data)}`);
+        router.push(`/songs?data=${encodeURIComponent(data)}`);
       } else {
         console.error('Error:', data);
       }
