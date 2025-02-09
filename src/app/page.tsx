@@ -39,7 +39,39 @@ export default function Home() {
   const router = useRouter();
   const handleGenerateLyrics = () => {
     setGeneratedLyrics(`Generated lyrics based on mood: ${mood}, genre: ${genre}, and prompt: ${lyricsPrompt}`);
-    router.push('/songs');
+
+    const requestData = {
+      mood,
+      genre,
+      lyricsPrompt,
+      audioURL,
+    };
+
+    // Making the API request to generate lyrics
+    try {
+      const response = await fetch('/api/generate-lyrics', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestData),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setGeneratedLyrics(data.message); // Handle response accordingly
+        // Navigate to songs page with lyrics as query param
+        router.push({
+          pathname: '/songs',
+          query: { lyrics: data.message },
+        });
+      } else {
+        console.error('Error:', data);
+      }
+    } catch (error) {
+      console.error('Error during API call:', error);
+    }
   };
 
   return (
