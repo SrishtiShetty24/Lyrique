@@ -47,24 +47,36 @@ const SongsPage = () => {
       return;
     }
 
-    // Create a link to download the audio file
-    const link = document.createElement('a');
-    link.href = songFileURL;
-    link.download = songFileName;
+    // Create a Blob from the data
+    fetch(songData)
+      .then((response) => response.blob())
+      .then((blob) => {
+        // Create a URL for the Blob object
+        const downloadLink = document.createElement('a');
+        const url = URL.createObjectURL(blob);
 
-    document.body.appendChild(link);
-    
-    // Programmatically click the anchor tag to start the download
-    link.click();
+        // Set attributes for downloading
+        downloadLink.href = url;
+        downloadLink.download = songFileName;
 
-    document.body.removeChild(link);
-    
-    // Set the download state to indicate the song has been downloaded
-    if (songNumber === 1) {
-      setSong1Downloaded(true);
-    } else if (songNumber === 2) {
-      setSong2Downloaded(true);
-    }
+        // Append to DOM, trigger the click, and remove link
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
+
+        // Cleanup: Revoke the Object URL after download
+        URL.revokeObjectURL(url);
+
+        // Update state to reflect that the song was downloaded
+        if (songNumber === 1) {
+          setSong1Downloaded(true);
+        } else if (songNumber === 2) {
+          setSong2Downloaded(true);
+        }
+      })
+      .catch((error) => {
+        console.error('Error downloading the song:', error);
+      });
   };
   
   const handleRefresh = () => {
