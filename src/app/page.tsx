@@ -49,15 +49,16 @@ export default function Home() {
 
     // Making the API request to generate lyrics
     try {
+      /*
       const response = await fetch('/api/generate-lyrics', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(requestData),
-      });
+      });*/
 
-      const data = await response.json();
+      const data = "Lyrics Sample testing"; //await response.json();
 
       if (response.ok) {
         setGeneratedLyrics(data.message); // Handle response accordingly
