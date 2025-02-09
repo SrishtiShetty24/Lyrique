@@ -4,22 +4,18 @@ import { useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { Suspense } from 'react';
 
-type SongData = {
-  lyrics: string;
-  DownloadSong: string;
-};
 
 const SongsPage = () => {
   const searchParams = useSearchParams();
   const dataString = searchParams.get('data'); // Retrieve the lyrics query param
   console.log(dataString)
-  const [data, setData] = useState<SongData | null>(null);
+  const [lyrics, setLyrics] = useState<string | null>(null);
+
   
   useEffect(() => {
     if (dataString) {
       try {
-        const parsedData = JSON.parse(decodeURIComponent(dataString));
-        setData(parsedData); // Set the parsed data to state
+        setLyrics(decodeURIComponent(dataString)); // Set the parsed lyrics to state
       } catch (error) {
         console.error('Error parsing data:', error);
       }
@@ -101,12 +97,12 @@ const SongsPage = () => {
       <div className="mb-8 w-3/4">
         <div className="mb-6">
           <h2 className="text-2xl font-bold">Lyrics 1</h2>
-          <p className="text-lg">{data ? data.lyrics : "Loading lyrics..."}</p>
+          <p className="text-lg">{lyrics ? lyrics : "Loading lyrics..."}</p>
         </div>
 
         <div className="mb-6">
           <h2 className="text-2xl font-bold">Lyrics 2</h2>
-          <p className="text-lg">{data ? data.lyrics : "Loading lyrics..."}</p>
+          <p className="text-lg">{lyrics ? lyrics : "Loading lyrics..."}</p>
         </div>
       </div>
 
