@@ -52,6 +52,8 @@ const SongsPage = () => {
         <div className="mb-6">
           <h2 className="text-2xl font-bold">Lyrics 1</h2>
           <p className="text-lg">{data ? data.lyrics : "Loading lyrics..."}</p>
+          <p className="text-lg">{data ? data.genre : "Loading lyrics..."}</p>
+          <p className="text-lg">{data ? data.mood : "Loading lyrics..."}</p>
         </div>
 
         <div className="mb-6">
