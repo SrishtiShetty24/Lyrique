@@ -4,16 +4,15 @@ import { useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { Suspense } from 'react';
 
-type LyricsData = {
+type SongData = {
   lyrics: string;
-  mood: string;
-  genre: string;
+  DownloadSong: string;
 };
 
 const SongsPage = () => {
   const searchParams = useSearchParams();
   const dataString = searchParams.get('data'); // Retrieve the lyrics query param
-  const [data, setData] = useState<LyricsData | null>(null);
+  const [data, setData] = useState<SongData | null>(null);
   
   useEffect(() => {
     if (dataString) {
@@ -102,8 +101,6 @@ const SongsPage = () => {
         <div className="mb-6">
           <h2 className="text-2xl font-bold">Lyrics 1</h2>
           <p className="text-lg">{data ? data.lyrics : "Loading lyrics..."}</p>
-          <p className="text-lg">{data ? data.genre : "Loading genre..."}</p>
-          <p className="text-lg">{data ? data.mood : "Loading mood..."}</p>
         </div>
 
         <div className="mb-6">
