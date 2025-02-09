@@ -37,7 +37,7 @@ const SongsPage = () => {
     // Define hardcoded song data for download based on song number
     if (songNumber === 1) {
       // Sample song data for song 1 (Replace with the actual song URL)
-      songData = 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3'; // Example URL
+      songData = 'https://www.rougue.com/music/sample.mp3'; // Example URL
       songFileName = 'song1_sample.mp3';
     } else if (songNumber === 2) {
       songData = 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3'; // Example URL
