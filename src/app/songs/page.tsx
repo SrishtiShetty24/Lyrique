@@ -31,6 +31,31 @@ const SongsPage = () => {
   const [song2Downloaded, setSong2Downloaded] = useState(false);
 
   const handleDownloadSong = (songNumber: number) => {
+    let songFileURL: string;
+    let songFileName: string;
+
+    // Define the hardcoded song URL based on the song number
+    if (songNumber === 1) {
+      // Hardcoded audio file URL for song 1 (you can use any valid URL or base64-encoded audio data)
+      songFileURL = 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3'; // Example audio file
+      songFileName = 'song1_sample.mp3'; // Set the file name for download
+    } else if (songNumber === 2) {
+      // Hardcoded audio file URL for song 2
+      songFileURL = 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3'; // Example audio file
+      songFileName = 'song2_sample.mp3'; // Set the file name for download
+    } else {
+      return;
+    }
+
+    // Create a link to download the audio file
+    const link = document.createElement('a');
+    link.href = songFileURL;
+    link.download = songFileName;
+
+    // Programmatically click the anchor tag to start the download
+    link.click();
+
+    // Set the download state to indicate the song has been downloaded
     if (songNumber === 1) {
       setSong1Downloaded(true);
     } else if (songNumber === 2) {
