@@ -41,55 +41,50 @@ export default function Home() {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen p-4 bg-gray-100">
-      <h1 className="text-2xl font-bold mb-4">AI Song Generator</h1>
+      <h1 className="text-4xl font-bold mb-6">AI Song Generator</h1>
       
-      <div className="mb-4">
-        <label className="block mb-1">Mood:</label>
-        <select className="p-2 border rounded" value={mood} onChange={(e) => setMood(e.target.value)}>
+      <div className="mb-4 w-3/4">
+        <label className="block mb-1 text-lg">Mood:</label>
+        <select className="p-3 border rounded w-full" value={mood} onChange={(e) => setMood(e.target.value)}>
           <option value="">Select a mood</option>
           <option value="happy">Happy</option>
           <option value="sad">Sad</option>
           <option value="excited">Excited</option>
+          <option value="calm">Calm</option>
         </select>
       </div>
 
-      <div className="mb-4">
-        <label className="block mb-1">Genre:</label>
-        <select className="p-2 border rounded" value={genre} onChange={(e) => setGenre(e.target.value)}>
+      <div className="mb-4 w-3/4">
+        <label className="block mb-1 text-lg">Genre:</label>
+        <select className="p-3 border rounded w-full" value={genre} onChange={(e) => setGenre(e.target.value)}>
           <option value="">Select a genre</option>
           <option value="pop">Pop</option>
           <option value="rock">Rock</option>
           <option value="jazz">Jazz</option>
+          <option value="classical">Classical</option>
         </select>
       </div>
 
-      <div className="mb-4 w-full">
-        <label className="block mb-1">Enter a prompt for the lyrics:</label>
-        <input
-          type="text"
-          className="p-2 border rounded w-full bg-gray-200"
+      <div className="mb-4 w-3/4">
+        <label className="block mb-1 text-lg">Enter a prompt for the lyrics:</label>
+        <textarea
+          className="p-3 border rounded w-full bg-gray-200"
           value={lyricsPrompt}
           onChange={(e) => setLyricsPrompt(e.target.value)}
+          rows={3}
         />
       </div>
 
-      <button onClick={handleGenerateLyrics} className="px-4 py-2 bg-green-500 text-white rounded-lg shadow-md mb-4">
+      <button onClick={handleGenerateLyrics} className="px-6 py-3 bg-green-500 text-white text-lg rounded-lg shadow-md mb-4">
         Generate Lyrics
       </button>
 
       {generatedLyrics && (
-        <div className="p-4 bg-white rounded shadow-md mb-4">
-          <h2 className="text-xl font-bold">Generated Lyrics:</h2>
-          <p>{generatedLyrics}</p>
+        <div className="p-4 bg-white rounded shadow-md mb-4 w-3/4">
+          <h2 className="text-2xl font-bold">Generated Lyrics:</h2>
+          <p className="text-lg">{generatedLyrics}</p>
         </div>
       )}
-
-      <button
-        onClick={recording ? handleStopRecording : handleStartRecording}
-        className="px-4 py-2 bg-blue-500 text-white rounded-lg shadow-md mt-8 self-end"
-      >
-        {recording ? 'Stop Recording' : 'Voice Recording'}
-      </button>
 
       {audioURL && (
         <audio controls className="mt-4">
@@ -97,6 +92,14 @@ export default function Home() {
           Your browser does not support the audio element.
         </audio>
       )}
+
+      <button
+        onClick={recording ? handleStopRecording : handleStartRecording}
+        className="px-6 py-3 bg-blue-500 text-white text-lg rounded-lg shadow-md mt-12"
+      >
+        {recording ? 'Stop Recording' : 'Voice Recording'}
+      </button>
     </div>
   );
 }
+
