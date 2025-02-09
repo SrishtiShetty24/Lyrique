@@ -40,28 +40,27 @@ export default function Home() {
   const handleGenerateLyrics = () => {
     setGeneratedLyrics(`Generated lyrics based on mood: ${mood}, genre: ${genre}, and prompt: ${lyricsPrompt}`);
 
-    /*const requestData = {
+    const requestData = {
       mood,
       genre,
       lyricsPrompt,
       audioURL,
-    };*/
+    };
 
     // Making the API request to generate lyrics
     try {
-      /*
+      
       const response = await fetch('/api/generate-lyrics', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(requestData),
-      });*/
+      });
 
       const data.message = "Lyrics Sample testing"; //await response.json();
 
-      //if (response.ok) {
-      if (1) {
+      if (response.ok) {
         setGeneratedLyrics(data.message); // Handle response accordingly
         // Navigate to songs page with lyrics as query param
         router.push({
