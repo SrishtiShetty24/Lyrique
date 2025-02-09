@@ -3,31 +3,45 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 
-const moods = ['Happy', 'Sad', 'Energetic', 'Calm'];
-const genres = ['Rock', 'Pop', 'Jazz', 'Classical'];
+const moods = ['Happy', 'Sad', 'Energetic', 'Relaxed'];
+const genres = ['Rock', 'Pop', 'Jazz', 'Hip-Hop'];
 
 const Page = () => {
   const router = useRouter();
   const [lyrics, setLyrics] = useState<string>('');
   const [mood, setMood] = useState<string>(moods[0]); // Default to first mood
   const [genre, setGenre] = useState<string>(genres[0]); // Default to first genre
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
+    setLoading(true);
+    setError(null);
 
-    const response = await fetch('/api/generate', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ prompt: lyrics, mood, genre }),
-    });
+    console.log('Submitting:', { prompt: lyrics, mood, genre }); // Debug log
 
-    const data = await response.json();
+    try {
+      const response = await fetch('/api/generate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ prompt: lyrics, mood, genre }),
+      });
 
-    if (data.lyrics) {
-      setLyrics(data.lyrics);
+      const data = await response.json();
+      console.log('API Response:', data); // Debug log
+
+      if (!data.lyrics || !data.songFileUrl) {
+        throw new Error('Failed to generate song. Try again.');
+      }
+
+      router.push(`/songs/result?data=${encodeURIComponent(JSON.stringify(data))}`);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Something went wrong.');
+      console.error('Error:', err);
+    } finally {
+      setLoading(false);
     }
-
-    router.push(`/songs/result?data=${encodeURIComponent(JSON.stringify(data))}`);
   };
 
   return (
@@ -46,7 +60,6 @@ const Page = () => {
           />
         </div>
 
-        {/* Mood Dropdown */}
         <div className="mb-4">
           <label className="block text-lg font-semibold mb-2">Mood</label>
           <select
@@ -62,7 +75,6 @@ const Page = () => {
           </select>
         </div>
 
-        {/* Genre Dropdown */}
         <div className="mb-4">
           <label className="block text-lg font-semibold mb-2">Genre</label>
           <select
@@ -78,8 +90,14 @@ const Page = () => {
           </select>
         </div>
 
-        <button type="submit" className="bg-blue-500 text-white px-6 py-3 rounded-lg text-lg">
-          Generate Song
+        {error && <p className="text-red-500 mb-4">{error}</p>}
+
+        <button
+          type="submit"
+          className="bg-blue-500 text-white px-6 py-3 rounded-lg text-lg"
+          disabled={loading}
+        >
+          {loading ? 'Generating...' : 'Generate Song'}
         </button>
       </form>
     </div>
