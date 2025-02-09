@@ -12,6 +12,7 @@ type SongData = {
 const SongsPage = () => {
   const searchParams = useSearchParams();
   const dataString = searchParams.get('data'); // Retrieve the lyrics query param
+  console.log(dataString)
   const [data, setData] = useState<SongData | null>(null);
   
   useEffect(() => {
