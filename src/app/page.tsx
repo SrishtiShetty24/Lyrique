@@ -49,7 +49,7 @@ export default function Home() {
 
     // Making the API request to generate lyrics
     try {
-      /* Remove this
+      /* uncomment this block - don't remove code
       const response = await fetch('/api/generate-lyrics', {
         method: 'POST',
         headers: {
