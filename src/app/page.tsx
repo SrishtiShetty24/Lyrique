@@ -3,23 +3,22 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 
+const moods = ['Happy', 'Sad', 'Energetic', 'Calm'];
+const genres = ['Rock', 'Pop', 'Jazz', 'Classical'];
+
 const Page = () => {
   const router = useRouter();
   const [lyrics, setLyrics] = useState<string>('');
-
-  const handleLyricsChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setLyrics(event.target.value);
-  };
+  const [mood, setMood] = useState<string>(moods[0]); // Default to first mood
+  const [genre, setGenre] = useState<string>(genres[0]); // Default to first genre
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
 
     const response = await fetch('/api/generate', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ prompt: lyrics }),
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ prompt: lyrics, mood, genre }),
     });
 
     const data = await response.json();
@@ -37,23 +36,49 @@ const Page = () => {
 
       <form onSubmit={handleSubmit} className="w-full max-w-3xl bg-white p-6 rounded-lg shadow-lg mb-6">
         <div className="mb-4">
-          <label htmlFor="lyrics" className="block text-lg font-semibold mb-2">
-            Enter Lyrics
-          </label>
+          <label className="block text-lg font-semibold mb-2">Enter Lyrics</label>
           <textarea
-            id="lyrics"
             value={lyrics}
-            onChange={handleLyricsChange}
+            onChange={(e) => setLyrics(e.target.value)}
             className="w-full p-3 border border-gray-300 rounded-md"
             rows={5}
             placeholder="Enter your lyrics here"
           />
         </div>
 
-        <button
-          type="submit"
-          className="bg-blue-500 text-white px-6 py-3 rounded-lg text-lg"
-        >
+        {/* Mood Dropdown */}
+        <div className="mb-4">
+          <label className="block text-lg font-semibold mb-2">Mood</label>
+          <select
+            value={mood}
+            onChange={(e) => setMood(e.target.value)}
+            className="w-full p-3 border border-gray-300 rounded-md"
+          >
+            {moods.map((m) => (
+              <option key={m} value={m}>
+                {m}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        {/* Genre Dropdown */}
+        <div className="mb-4">
+          <label className="block text-lg font-semibold mb-2">Genre</label>
+          <select
+            value={genre}
+            onChange={(e) => setGenre(e.target.value)}
+            className="w-full p-3 border border-gray-300 rounded-md"
+          >
+            {genres.map((g) => (
+              <option key={g} value={g}>
+                {g}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <button type="submit" className="bg-blue-500 text-white px-6 py-3 rounded-lg text-lg">
           Generate Song
         </button>
       </form>

@@ -5,6 +5,8 @@ import React, { useEffect, useState } from 'react';
 type SongData = {
   lyrics: string;
   songFileUrl: string;
+  mood: string;
+  genre: string;
 };
 
 const ResultPage = () => {
@@ -21,13 +23,16 @@ const ResultPage = () => {
 
   if (!songData) return <div>Loading...</div>;
 
-  const { lyrics, songFileUrl } = songData;
+  const { lyrics, songFileUrl, mood, genre } = songData;
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen p-4 bg-gray-100">
       <h1 className="text-4xl font-bold mb-6">Your Generated Song</h1>
 
       <div className="w-full max-w-3xl bg-white p-6 rounded-lg shadow-lg mb-6">
+        <h2 className="text-2xl font-semibold mb-4">Mood: {mood}</h2>
+        <h2 className="text-2xl font-semibold mb-4">Genre: {genre}</h2>
+
         <h2 className="text-2xl font-semibold mb-4">Lyrics:</h2>
         <p className="text-lg">{lyrics}</p>
 
@@ -39,11 +44,7 @@ const ResultPage = () => {
               Your browser does not support the audio element.
             </audio>
             <div className="text-center">
-              <a
-                href={songFileUrl}
-                download="generated_song.mp3"
-                className="bg-blue-500 text-white px-6 py-3 rounded-lg text-lg"
-              >
+              <a href={songFileUrl} download="generated_song.mp3" className="bg-blue-500 text-white px-6 py-3 rounded-lg text-lg">
                 Download Song
               </a>
             </div>
