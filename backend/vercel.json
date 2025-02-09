@@ -1,15 +1,23 @@
 {
-    "builds": [
-      {
-        "src": "api/app.py",
-        "use": "@vercel/python"
-      }
-    ],
-    "routes": [
-      {
-        "src": "/api/(.*)",
-        "dest": "api/app.py"
-      }
-    ]
-  }
-  
+  "version": 2,
+  "builds": [
+    {
+      "src": "app.py",
+      "use": "@vercel/python"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/generate-lyrics",
+      "dest": "/app.py"
+    },
+    {
+      "src": "/generate-song",
+      "dest": "/app.py"
+    },
+    {
+      "src": "/download/(.*)",
+      "dest": "/app.py"
+    }
+  ]
+}

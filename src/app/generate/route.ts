@@ -1,4 +1,3 @@
-
 // src/app/api/generate/route.ts
 import { NextResponse } from 'next/server';
 
@@ -25,5 +24,22 @@ export async function POST(request: Request) {
   const data = await response.json();
   const generatedLyrics = data.choices[0].message.content; // Extract the generated lyrics
 
-  return NextResponse.json({ lyrics: generatedLyrics });
+  // Call a separate function to generate the song file if required
+  const songFileUrl = await generateSongFile(generatedLyrics);  // hypothetical function to generate song file
+
+  return NextResponse.json({
+    lyrics: generatedLyrics,
+    songFileUrl: songFileUrl,
+  });
+}
+
+// Placeholder function for generating a song file (implement your song generation logic)
+async function generateSongFile(lyrics: string) {
+  // Simulating song file generation (you can integrate a service like Magenta here)
+  const songFilePath = '/path/to/generated/song.mp3';  // Path to where your generated file will be saved
+
+  // Logic to generate song from lyrics
+  // For example, use an external API or library to synthesize a song
+  // Return the URL path where the file can be accessed
+  return `/songs/generated_song.mp3`;
 }

@@ -1,12 +1,23 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_from_directory
 import openai
 import soundfile as sf
 import numpy as np
 import os
+import shutil
 
+# Initialize Flask app
 app = Flask(__name__)
 
-openai.api_key = "your_openai_api_key"  # Add your OpenAI API key here
+# Set the OpenAI API key (Ensure this is properly set in your environment variables)
+openai.api_key = os.getenv("OPENAI_API_KEY")  # Use environment variable for security
+
+# Directories for saving the files (Vercel uses /tmp for temporary storage)
+TEMP_FOLDER = '/tmp/temp_audio'
+PERMANENT_FOLDER = '/tmp/static/songs'
+
+# Create directories if they don't exist
+os.makedirs(TEMP_FOLDER, exist_ok=True)
+os.makedirs(PERMANENT_FOLDER, exist_ok=True)
 
 # Home route to test server
 @app.route("/", methods=["GET"])
@@ -29,7 +40,7 @@ def generate_lyrics():
         response = openai.Completion.create(
             engine="text-davinci-003",
             prompt=f"""Write song lyrics about: {prompt} and only return the Lyrics. 
-            Split the pagaraphs into verses. Utilize the {mood} mood provided.
+            Split the paragraphs into verses. Utilize the {mood} mood provided.
             And for every prompt, follow the provided genre {genre}""",
             max_tokens=150
         )
@@ -55,7 +66,7 @@ def generate_song():
 
         t = np.linspace(0, duration, int(sample_rate * duration), endpoint=False)
         melody_audio = 0.5 * np.sin(2 * np.pi * frequency * t)
-        melody_file = 'output_melody.wav'
+        melody_file = os.path.join(TEMP_FOLDER, 'output_melody.wav')
         sf.write(melody_file, melody_audio, sample_rate)
         
         return melody_file
@@ -77,14 +88,19 @@ def generate_song():
         melody_audio = melody_audio[:min_len]
         
         combined_audio = voice_audio + melody_audio
-        combined_song_path = 'combined_song.wav'
+        combined_song_path = os.path.join(PERMANENT_FOLDER, 'combined_song.wav')
         sf.write(combined_song_path, combined_audio, voice_sr)
 
-        return jsonify({'songURL': combined_song_path})
+        # Move the file to the permanent folder
+        shutil.move(combined_song_path, os.path.join(PERMANENT_FOLDER, 'final_song.wav'))
+
+        return jsonify({'songURL': f'/download/{os.path.basename(combined_song_path)}'})
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
+# Endpoint to download the final song
+@app.route('/download/<filename>', methods=['GET'])
+def download(filename):
+    return send_from_directory(PERMANENT_FOLDER, filename)
 
-if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 5000))  # Use PORT from env, default to 5000
-    app.run(host="0.0.0.0", port=port)
+# Vercel uses serverless functions, so there's no need for app.run(), Vercel handles the routing automatically
