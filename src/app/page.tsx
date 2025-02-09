@@ -10,8 +10,9 @@ export default function Home() {
   const [genre, setGenre] = useState('');
   const [recording, setRecording] = useState(false);
   const [audioURL, setAudioURL] = useState(null);
-  const mediaRecorderRef = useRef(null);
-  const audioChunksRef = useRef([]);
+  const [uploadedAudio, setUploadedAudio] = useState(null);
+  const mediaRecorderRef = useRef<MediaRecorder | null>(null);
+  const audioChunksRef = useRef<Blob[]>([]);
 
   const handleGenerateLyrics = async () => {
     const response = await fetch('/api/generate-lyrics', {
@@ -35,23 +36,35 @@ export default function Home() {
 
   const handleStartRecording = async () => {
     const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-    mediaRecorderRef.current = new MediaRecorder(stream);
-    mediaRecorderRef.current.ondataavailable = (event) => {
-      audioChunksRef.current.push(event.data);
-    };
-    mediaRecorderRef.current.onstop = () => {
-      const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/wav' });
-      const url = URL.createObjectURL(audioBlob);
-      setAudioURL(url);
-      audioChunksRef.current = [];
-    };
-    mediaRecorderRef.current.start();
-    setRecording(true);
+    if (stream) {
+      mediaRecorderRef.current = new MediaRecorder(stream);
+      mediaRecorderRef.current.ondataavailable = (event) => {
+        audioChunksRef.current.push(event.data);
+      };
+      mediaRecorderRef.current.onstop = () => {
+        const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/wav' });
+        const url = URL.createObjectURL(audioBlob);
+        setAudioURL(url);
+        audioChunksRef.current = [];
+      };
+      mediaRecorderRef.current.start();
+      setRecording(true);
+    }
   };
 
   const handleStopRecording = () => {
-    mediaRecorderRef.current?.stop();
-    setRecording(false);
+    if (mediaRecorderRef.current) {
+      mediaRecorderRef.current.stop();
+      setRecording(false);
+    }
+  };
+
+  const handleAudioUpload = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const url = URL.createObjectURL(file);
+      setUploadedAudio(url);
+    }
   };
 
   return (
@@ -116,7 +129,17 @@ export default function Home() {
           </div>
         )}
       </div>
+
+      {/* Audio Upload */}
+      <div className="mt-8 w-full max-w-md">
+        <h2 className="text-2xl font-bold mb-4">Upload an Audio File</h2>
+        <input type="file" accept="audio/*" onChange={handleAudioUpload} className="mb-4" />
+        {uploadedAudio && (
+          <div className="mt-4">
+            <audio controls src={uploadedAudio} className="w-full"></audio>
+          </div>
+        )}
+      </div>
     </div>
   );
 }
-
