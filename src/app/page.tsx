@@ -58,7 +58,7 @@ export default function Home() {
         body: JSON.stringify(requestData),
       });
 
-      const data.message = "Lyrics Sample testing"; //await response.json();
+      const data = await response.json();
 
       if (response.ok) {
         setGeneratedLyrics(data.message); // Handle response accordingly
