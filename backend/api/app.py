@@ -18,6 +18,8 @@ def home():
 def generate_lyrics():
     data = request.json
     prompt = data.get('prompt')
+    mood = data.get('mood')
+    genre = data.get('genre')
     
     if not prompt:
         return jsonify({'error': 'Prompt is required'}), 400
@@ -26,7 +28,9 @@ def generate_lyrics():
     try:
         response = openai.Completion.create(
             engine="text-davinci-003",
-            prompt=f"Write song lyrics about: {prompt}",
+            prompt=f"""Write song lyrics about: {prompt} and only return the Lyrics. 
+            Split the pagaraphs into verses. Utilize the {mood} mood provided.
+            And for every prompt, follow the provided genre {genre}""",
             max_tokens=150
         )
         lyrics = response.choices[0].text.strip()
