@@ -6,8 +6,20 @@ import { Suspense } from 'react';
 
 const SongsPage = () => {
   const searchParams = useSearchParams();
-  const data = searchParams.get('data'); // Retrieve the lyrics query param
-
+  const dataString = searchParams.get('data'); // Retrieve the lyrics query param
+  const [data, setData] = useState(null);
+  
+  useEffect(() => {
+    if (dataString) {
+      try {
+        const parsedData = JSON.parse(decodeURIComponent(dataString));
+        setData(parsedData); // Set the parsed data to state
+      } catch (error) {
+        console.error('Error parsing data:', error);
+      }
+    }
+  }, [dataString]);
+  
   // State to track song download status
   const [song1Downloaded, setSong1Downloaded] = useState(false);
   const [song2Downloaded, setSong2Downloaded] = useState(false);
