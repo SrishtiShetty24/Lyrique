@@ -1,6 +1,6 @@
 'use client';  // Ensure this file is client-side rendered
 
-import React, { useState } from 'react';
+import React from 'react';
 
 export default function Page2() {
   //const [song1, setSong1] = useState<string | null>(null);
