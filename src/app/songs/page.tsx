@@ -8,7 +8,7 @@ const SongsPage = () => {
   const searchParams = useSearchParams();
   const lyrics = searchParams.get('lyrics'); // Retrieve the lyrics query param
 
-  const handleDownloadSong = (songNumber: number) => {
+  const handleDownload = (songNumber: number) => {
     if (songNumber === 1) {
       setSong1Downloaded(true);
       // You can add the logic to download Song 1 here
